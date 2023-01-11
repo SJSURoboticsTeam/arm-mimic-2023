@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build everything. Not sure if conan must be ran each time prob not
+# Build everything. Conan only needs to run once.
 
 # clear old build files
 rm -r build/*

@@ -2,21 +2,25 @@
 
 int main()
 {
-  auto init_result = initialize_target();
+  if constexpr (hal::config::project == "mimic") {
+    auto init_result_arm_mimic = initialize_arm_mimic();
 
-  if (!init_result) {
-    hal::halt();
-  }
+    if (!init_result_arm_mimic) {
+      hal::halt();
+    }
 
-  auto hardware_map = init_result.value();
-  auto is_finished = application(hardware_map);
-
-  if (!is_finished) {
-    hardware_map.reset();
+    auto mimic_hardware_map = init_result_arm_mimic.value();
+    auto mimic_is_finished = application(mimic_hardware_map);
   } else {
-    hal::halt();
-  }
+    auto init_result_hello_world = initialize_hw();
 
+      if (!init_result_hello_world) {
+        hal::halt();
+      }
+
+    auto hello_world_hw_map = init_result_hello_world.value();
+    auto world_is_finished = application(hello_world_hw_map);
+  }
   return 0;
 }
 

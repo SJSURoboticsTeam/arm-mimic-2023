@@ -6,5 +6,6 @@
 #include <string_view>
 
 namespace hal::config {
-constexpr std::string_view platform = "lpc4078";
+    constexpr std::string_view platform = "lpc4078";
+    constexpr std::string_view project = "mimic";
 }  // namespace hal::config
