@@ -53,6 +53,7 @@ hal::result<arm_mimic::hardware_map> initialize_target()
     .signal_2 = &signal_2_raw,
     .signal_3 = &signal_3_raw,
     .steady_clock = &counter,
+    .adc_pin = &adc_inp_raw,
     .reset = []() { hal::cortex_m::system_control::reset(); },
   };
 }

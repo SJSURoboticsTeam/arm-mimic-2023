@@ -18,8 +18,8 @@ struct hardware_map
   hal::output_pin* signal_3;
 
   hal::steady_clock* steady_clock; // clock of mcu
-  hal::callback<void()> reset; // reset function
   hal::adc* adc_pin; // adc input pin to read from mux
+  hal::callback<void()> reset; // reset function
 
 };
 }  // namespace arm_mimic

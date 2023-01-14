@@ -5,16 +5,17 @@
 #include <array>
 #include <libhal/error.hpp>
 #include <libhal-util/map.hpp>
+#include <libhal-util/math.hpp>
 
 class AdcMuxCd74hc4067
 {
 private:
+    hal::adc* adc_output_;
     hal::output_pin* signal_0_;
     hal::output_pin* signal_1_;
     hal::output_pin* signal_2_;
     hal::output_pin* signal_3_;
     hal::steady_clock* clock_;
-    hal::adc* adc_output_;
 
 public:
     AdcMuxCd74hc4067(
@@ -59,7 +60,6 @@ hal::result<void> AdcMuxCd74hc4067::swap_channels(uint8_t number) {
     HAL_CHECK(signal_1_->level(bool(number & (1 << 1)))); // might need to HAL_CHECK
     HAL_CHECK(signal_2_->level(bool(number & (1 << 2)))); // might need to HAL_CHECK
     HAL_CHECK(signal_3_->level(bool(number & (1 << 3)))); // might need to HAL_CHECK
-    HAL_CHECK(hal::delay(*clock_, 1ms));
 
     return hal::success();
 }
@@ -73,10 +73,11 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
 
     // take ten readings then average them
     for (int i = 0; i < 10; i++) {
-        float digital_value = HAL_CHECK(adc_output_->read());
+        float digital_value = HAL_CHECK(adc_output_->read()); 
+        digital_value = hal::absolute_value(digital_value); // we assume positive reference voltage will be used
         float voltage = hal::map(
             digital_value,
-            std::pair<float, float>(0, 1000), // FIXME: get real maximum
+            std::pair<float, float>(0, 100), // FIXME: get real maximum
             std::pair<float, float>(0.0f, 3.3f)
         );
         average += voltage;

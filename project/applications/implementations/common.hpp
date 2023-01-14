@@ -3,6 +3,8 @@
 #include <libhal/error.hpp>
 #include <assert.h> // TODO: remove after implemented
 #include <libhal-util/map.hpp>
+#include <libhal-util/serial.hpp>
+#include <libhal/serial.hpp>
 
 namespace arm_mimic::common {
     template<uint8_t N>
@@ -26,7 +28,7 @@ namespace arm_mimic::common {
 
     json_str.append("]}");
     // TODO POST to esp/output serial.
-    assert("POST to esp/output serial not implienmented");
+    assert("POST to esp/output serial not implemented");
     return hal::success();
     }
 
@@ -47,6 +49,23 @@ namespace arm_mimic::common {
         return hal::map(value, 
         std::pair<float, float>(0, max_voltage), 
         std::pair<float, float>(0, 360));
+    }
+
+    template<typename T, uint8_t N>
+    hal::status print_array(std::array<T, N>& array, hal::serial& uart) {
+
+        std::string output_string = "";
+        std::string index = "Index: ";
+        std::string value = " Value: ";
+        for (int i = 0; i < N; i++) {
+            output_string += index.append(std::to_string(i));
+            output_string += value.append(std::to_string(array[i]));
+            output_string += "\n";
+        }
+
+        HAL_CHECK(hal::write(uart, output_string));
+
+        return hal::success();
     }
 
 } // arm_mimic::common
