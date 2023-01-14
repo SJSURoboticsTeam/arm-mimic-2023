@@ -86,7 +86,7 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
 }
 
 template<uint8_t N>
-hal::result<std::array<float, N>> read_all(std::array<uint8_t, N> channel_list) {
+hal::result<std::array<float, N>> AdcMuxCd74hc4067::read_all(std::array<uint8_t, N> channel_list) {
     if (N > 16)
         return hal::new_error("Only 16 channels on mux");
     
