@@ -7,9 +7,9 @@ rm -r build/*
 
 cd build
 
-conan install .. -s build_type=Debug
+conan install .. -s build_type=Debug --build=missing
 
-cmake .. -D CMAKE_BUILD_TYPE=Debug
+cmake .. -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
 
 make -j
 

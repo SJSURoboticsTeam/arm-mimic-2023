@@ -1,7 +1,0 @@
-[requires]
-liblpc40xx/0.3.2
-
-[generators]
-CMakeToolchain
-CMakeDeps
-VirtualRunEnv

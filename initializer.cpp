@@ -1,17 +1,17 @@
-#include <libarmcortex/dwt_counter.hpp>
-#include <libarmcortex/startup.hpp>
-#include <libarmcortex/system_control.hpp>
+#include <libhal-armcortex/dwt_counter.hpp>
+#include <libhal-armcortex/startup.hpp>
+#include <libhal-armcortex/system_control.hpp>
 
-#include <liblpc40xx/constants.hpp>
-#include <liblpc40xx/input_pin.hpp>
-#include <liblpc40xx/output_pin.hpp>
-#include <liblpc40xx/adc.hpp>
-#include <liblpc40xx/system_controller.hpp>
-#include <liblpc40xx/uart.hpp>
+#include <libhal-lpc40xx/constants.hpp>
+#include <libhal-lpc40xx/input_pin.hpp>
+#include <libhal-lpc40xx/output_pin.hpp>
+#include <libhal-lpc40xx/adc.hpp>
+#include <libhal-lpc40xx/system_controller.hpp>
+#include <libhal-lpc40xx/uart.hpp>
 
-#include "../../hardware_map.hpp"
+#include "hardware_map.hpp"
 
-// TODO: move these probably
+// hardware locations for pins and channels on the lpc4078
 #define SIGNAL_0 2, 1
 #define SIGNAL_1 2, 4
 #define SIGNAL_2 2, 6
@@ -27,6 +27,7 @@ hal::result<arm_mimic::hardware_map> initialize_target()
 
   // Set the MCU to the maximum clock speed
   HAL_CHECK(hal::lpc40xx::clock::maximum(10.0_MHz));
+
 
   // Create a hardware counter
   auto& clock = hal::lpc40xx::clock::get();

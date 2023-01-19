@@ -7,4 +7,4 @@
 
 namespace hal::config {
 constexpr std::string_view platform = "lpc4078";
-}  // namespace hal::config
+} // namespace hal::config
