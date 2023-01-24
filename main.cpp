@@ -8,7 +8,7 @@
 
 #include "implementations/adc_mux_cd74hc4067.hpp"
 #include "implementations/common.hpp"
-#include "hardware_map.hpp"
+#include "libhal_configuration/hardware_map.hpp"
 
 using namespace hal::literals;
 using namespace std::chrono_literals;
