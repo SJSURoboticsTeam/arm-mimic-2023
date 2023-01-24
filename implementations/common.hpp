@@ -1,14 +1,15 @@
 #pragma once
-#include <string>
 #include <libhal/error.hpp>
 #include <assert.h> // TODO: remove after implemented
 #include <libhal-util/map.hpp>
 #include <libhal-util/serial.hpp>
 #include <libhal/serial.hpp>
+#include <libhal-util/serial.hpp>
 
 namespace arm_mimic::common {
+
     template<uint8_t N>
-    hal::status send_data_mc(std::array<float, N> raw_data) {
+    hal::status send_data_mc(hal::serial& uart, std::array<float, N> raw_data, bool is_network = false) {
         // Structure of json file
         /* 
         { 
@@ -18,17 +19,23 @@ namespace arm_mimic::common {
             Angles: [$ROTUNDA, $SHOULDER, $ELBOW, $WRIST_PITCH, $WRIST_ROLL, $END_EFFECTOR]
         }
         */
-    std::string json_str = "{\"HB\":\"0\",\"IO\":\"1\",\"M\":\"M\",\"CMD\":[";
+    char* json_str = "{\"HB\":\"0\",\"IO\":\"1\",\"M\":\"M\",\"CMD\":[";
     for (auto i = 0; i < N; i++) {
             if (i != N - 1)
-                json_str.append(std::to_string(raw_data[i]) + ",");
+                sprintf(json_str, "%f,", raw_data[i]);
             else
-                json_str.append(std::to_string(raw_data[i]));
+                sprintf(json_str, "%f", raw_data[i]);
     }
 
-    json_str.append("]}");
-    // TODO POST to esp/output serial.
-    assert("POST to esp/output serial not implemented");
+
+    sprintf(json_str, "%s", "]}");
+    if (is_network) {
+        // TODO: implement networking
+        assert("POST to esp/output serial not implemented");
+    }
+    else
+        hal::print<128>(uart, json_str);
+        
     return hal::success();
     }
 
@@ -54,16 +61,18 @@ namespace arm_mimic::common {
     template<typename T, uint8_t N>
     hal::status print_array(std::array<T, N>& array, hal::serial& uart) {
 
-        std::string output_string = "";
-        std::string index = "Index: ";
-        std::string value = " Value: ";
+        const size_t buffer_size = 128;
+        const char* index = "Index: ";
+        const char* value = " Value: ";
         for (int i = 0; i < N; i++) {
-            output_string += index.append(std::to_string(i));
-            output_string += value.append(std::to_string(array[i]));
-            output_string += "\n";
+            hal::print<buffer_size>(uart, "%s %i %s %f\n", index, i, value, array[i]);
         }
+        // for (int i = 0; i < N; i++) {
+        //     output_string += index.append(std::to_string(i));
+        //     output_string += value.append(std::to_string(array[i]));
+        //     output_string += "\n";
+        // }
 
-        HAL_CHECK(hal::write(uart, output_string));
 
         return hal::success();
     }

@@ -4,11 +4,14 @@
 #include <libhal-lpc40xx/output_pin.hpp>
 #include <libhal-lpc40xx/system_controller.hpp>
 #include <libhal-util/steady_clock.hpp>
+#include <libhal-util/serial.hpp>
 
 #include "implementations/adc_mux_cd74hc4067.hpp"
 #include "implementations/common.hpp"
 #include "hardware_map.hpp"
 
+using namespace hal::literals;
+using namespace std::chrono_literals;
 
 hal::status app_main(arm_mimic::hardware_map& p_map) {
 
@@ -16,30 +19,34 @@ hal::status app_main(arm_mimic::hardware_map& p_map) {
 
   while (true) {
     auto digital_multiplexer = AdcMuxCd74hc4067(p_map.adc_pin, p_map.signal_0, p_map.signal_1, p_map.signal_2, p_map.signal_3, p_map.steady_clock);
-      
+    
     std::array<uint8_t, N> channels = {0, 1, 2, 3, 4, 5};
     std::array<float, N> degree_conversion = {360, 90, 90, 90, 360, 360}; 
     auto output_voltages = HAL_CHECK(digital_multiplexer.read_all<N>(channels));
+    // hal::print<128>(*p_map.terminal, "Float: %f\n", output_voltages[0]);
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 100ms));
+    // HAL_CHECK(hal::write(*p_map.terminal, "test\n"));
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 100ms));
+   // continue;
     std::array<float, N> results = {};
     for (auto i = 0; i < N; i++) {
         float true_degree = arm_mimic::common::voltage_to_degree(output_voltages[i], 3.3, 360);
         results[i] = HAL_CHECK(arm_mimic::common::degree_phase_shift(true_degree, degree_conversion[i]));
     }
-    //HAL_CHECK(arm_mimic::common::send_data_mc<N>(results));
-      
-    HAL_CHECK((arm_mimic::common::print_array<float, N>(results, *p_map.terminal)));
-
+    
+    HAL_CHECK(arm_mimic::common::send_data_mc<N>(*p_map.terminal, results));
+    // Array printing for debugging, send_mc_data sends over serial
+    // HAL_CHECK((arm_mimic::common::print_array<float, N>(results, *p_map.terminal)));
+    HAL_CHECK(hal::delay(*p_map.steady_clock, 500ms));
+    
   }
-
-
 
   return hal::success();
 }
 
 int main()
 {
-  using namespace hal::literals;
-  using namespace std::chrono_literals;
+ 
 
   // Initializing the data section initializes global and static variables and
   // is required for the standard C library to run.
@@ -51,6 +58,13 @@ int main()
     hal::halt();
   
   auto p_map = init_result.value();
+
+  // while (true)
+  // {
+  //   hal::write(*p_map.terminal, "test");
+  //   hal::delay(*p_map.steady_clock, 500ms);
+  // }
+  
 
   auto app_result = app_main(p_map);
   

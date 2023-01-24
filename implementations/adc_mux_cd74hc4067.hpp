@@ -60,6 +60,7 @@ hal::result<void> AdcMuxCd74hc4067::swap_channels(uint8_t number) {
     HAL_CHECK(signal_1_->level(bool(number & (1 << 1)))); // might need to HAL_CHECK
     HAL_CHECK(signal_2_->level(bool(number & (1 << 2)))); // might need to HAL_CHECK
     HAL_CHECK(signal_3_->level(bool(number & (1 << 3)))); // might need to HAL_CHECK
+    HAL_CHECK(hal::delay(*clock_, 1ms));
 
     return hal::success();
 }

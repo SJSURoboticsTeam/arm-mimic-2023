@@ -26,7 +26,8 @@ hal::result<arm_mimic::hardware_map> initialize_target()
   hal::cortex_m::system_control::initialize_floating_point_unit();
 
   // Set the MCU to the maximum clock speed
-  HAL_CHECK(hal::lpc40xx::clock::maximum(10.0_MHz));
+  // Requires oscilation crystal to set a clock maximum
+  // HAL_CHECK(hal::lpc40xx::clock::maximum(10.0_MHz));
 
 
   // Create a hardware counter
