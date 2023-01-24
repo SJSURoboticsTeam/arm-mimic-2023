@@ -23,11 +23,6 @@ hal::status app_main(arm_mimic::hardware_map& p_map) {
     std::array<uint8_t, N> channels = {0, 1, 2, 3, 4, 5};
     std::array<float, N> degree_conversion = {360, 90, 90, 90, 360, 360}; 
     auto output_voltages = HAL_CHECK(digital_multiplexer.read_all<N>(channels));
-    // hal::print<128>(*p_map.terminal, "Float: %f\n", output_voltages[0]);
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 100ms));
-    // HAL_CHECK(hal::write(*p_map.terminal, "test\n"));
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 100ms));
-   // continue;
     std::array<float, N> results = {};
     for (auto i = 0; i < N; i++) {
         float true_degree = arm_mimic::common::voltage_to_degree(output_voltages[i], 3.3, 360);
@@ -35,8 +30,6 @@ hal::status app_main(arm_mimic::hardware_map& p_map) {
     }
     
     HAL_CHECK(arm_mimic::common::send_data_mc<N>(*p_map.terminal, results));
-    // Array printing for debugging, send_mc_data sends over serial
-    // HAL_CHECK((arm_mimic::common::print_array<float, N>(results, *p_map.terminal)));
     HAL_CHECK(hal::delay(*p_map.steady_clock, 500ms));
     
   }
@@ -79,8 +72,7 @@ int main()
 }
 
 namespace boost {
-void
-throw_exception([[maybe_unused]] std::exception const& p_error)
+void throw_exception([[maybe_unused]] std::exception const& p_error)
 {
   std::abort();
 }

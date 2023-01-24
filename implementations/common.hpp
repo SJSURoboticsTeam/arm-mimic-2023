@@ -61,18 +61,11 @@ namespace arm_mimic::common {
     template<typename T, uint8_t N>
     hal::status print_array(std::array<T, N>& array, hal::serial& uart) {
 
-        const size_t buffer_size = 128;
         const char* index = "Index: ";
         const char* value = " Value: ";
         for (int i = 0; i < N; i++) {
-            hal::print<buffer_size>(uart, "%s %i %s %f\n", index, i, value, array[i]);
+            hal::print<128>(uart, "%s %i %s %f\n", index, i, value, array[i]);
         }
-        // for (int i = 0; i < N; i++) {
-        //     output_string += index.append(std::to_string(i));
-        //     output_string += value.append(std::to_string(array[i]));
-        //     output_string += "\n";
-        // }
-
 
         return hal::success();
     }
