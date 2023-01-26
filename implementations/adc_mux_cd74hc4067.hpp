@@ -80,7 +80,7 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
             digital_value,
             std::pair<float, float>(0, 100), // FIXME: get real maximum
             std::pair<float, float>(0.0f, 3.3f)
-        );
+        ) * 100;
         average += voltage;
     }
 
