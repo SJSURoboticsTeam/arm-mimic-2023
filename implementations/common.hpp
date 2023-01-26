@@ -5,11 +5,11 @@
 #include <libhal-util/serial.hpp>
 #include <libhal/serial.hpp>
 #include <libhal-util/serial.hpp>
+#include <cstdio>
 
 namespace arm_mimic::common {
 
-    template<uint8_t N>
-    hal::status send_data_mc(hal::serial& uart, std::array<float, N> raw_data, bool is_network = false) {
+    hal::status send_data_mc(hal::serial& uart, std::array<float, 6> raw_data, bool is_network = false) {
         // Structure of json file
         /* 
         { 
@@ -19,43 +19,37 @@ namespace arm_mimic::common {
             Angles: [$ROTUNDA, $SHOULDER, $ELBOW, $WRIST_PITCH, $WRIST_ROLL, $END_EFFECTOR]
         }
         */
-    char* json_str = "{\"HB\":\"0\",\"IO\":\"1\",\"M\":\"M\",\"CMD\":[";
-    for (auto i = 0; i < N; i++) {
-            if (i != N - 1)
-                sprintf(json_str, "%f,", raw_data[i]);
-            else
-                sprintf(json_str, "%f", raw_data[i]);
+
+        const char* json_format_str = "{\"HB\":\"0\",\"IO\":\"1\",\"M\":\"M\",\"CMD\":[%f,%f,%f,%f,%f,%f]}";
+        char buffer[200];
+        snprintf(buffer, 200, json_format_str, 
+            raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4], raw_data[5]);
+        if (!is_network)
+            hal::print<200>(uart, buffer);
+        else
+            return hal::new_error("Not implemented");
+            
+        return hal::success();
     }
 
-
-    sprintf(json_str, "%s", "]}");
-    if (is_network) {
-        // TODO: implement networking
-        assert("POST to esp/output serial not implemented");
-    }
-    else
-        hal::print<128>(uart, json_str);
+    hal::result<float> degree_phase_shift(float input_deg, float new_zero) {
+        // if (new_zero < -360 || new_zero > 360)
+        //     return hal::new_error("This function only considers the unit circle. Please set new_zero to the position on the unit circle it will be.");
         
-    return hal::success();
-    }
-
-    hal::result<float> degree_phase_shift(float input_degree, float new_origin) {
-        if (new_origin < 0 || new_origin > 360)
-            return hal::new_error("This function only considers the unit circle. Please set new_zero to the position on the unit circle it will be.");
-        
-        while (input_degree > 360 || input_degree < -360) {
-            // take modulus of a float without losing data, thanks Corey!
-            input_degree = input_degree / 360;
-            input_degree = (input_degree - static_cast<int>(input_degree)) * 360;
+        while (input_deg > 360 || input_deg < -360)
+        {
+            // take modulus of a float without losing data
+            input_deg = input_deg / 360;
+            input_deg = (input_deg - static_cast<int>(input_deg)) * 360;
         }
-
-        return input_degree - new_origin;
+        
+        return input_deg - new_zero;
     }
 
     float voltage_to_degree(float value, float max_voltage, float max_degree) {
         return hal::map(value, 
         std::pair<float, float>(0, max_voltage), 
-        std::pair<float, float>(0, 360));
+        std::pair<float, float>(0, max_degree));
     }
 
     template<typename T, uint8_t N>

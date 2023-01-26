@@ -3,6 +3,8 @@
 # Build everything. Not sure if conan must be ran each time prob not
 
 # clear old build files
+mkdir build 
+
 rm -r build/*
 
 cd build
