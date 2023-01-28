@@ -15,7 +15,7 @@ using namespace std::chrono_literals;
 
 hal::status app_main(arm_mimic::hardware_map& p_map) {
 
-  const uint8_t N = 2;
+  const uint8_t N = 6;
 
   while (true) {
     auto digital_multiplexer = AdcMuxCd74hc4067(p_map.adc_pin, p_map.signal_0, p_map.signal_1, p_map.signal_2, p_map.signal_3, p_map.steady_clock);
@@ -37,18 +37,18 @@ hal::status app_main(arm_mimic::hardware_map& p_map) {
       }
     }
     
-    //HAL_CHECK(arm_mimic::common::send_data_mc(*p_map.terminal, results));
-    (void)hal::write(*p_map.terminal, "Phase shift:\n");
-    (void)arm_mimic::common::print_array<float, N>(results, *p_map.terminal);
-    HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
-    (void)hal::write(*p_map.terminal, "Voltage:\n");
-    (void)arm_mimic::common::print_array<float, N>(output_voltages, *p_map.terminal);
-    HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms)); 
-    (void)hal::write(*p_map.terminal, "True degree:\n");
-    arm_mimic::common::print_array<float, N>(true_degrees, *p_map.terminal);
-    HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
-    (void)hal::write(*p_map.terminal, "\n");
-    HAL_CHECK(hal::delay(*p_map.steady_clock, 1000ms));
+    HAL_CHECK(arm_mimic::common::send_data_mc(*p_map.terminal, results));
+    // (void)hal::write(*p_map.terminal, "Phase shift:\n");
+    // (void)arm_mimic::common::print_array<float, N>(results, *p_map.terminal);
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
+    // (void)hal::write(*p_map.terminal, "Voltage:\n");
+    // (void)arm_mimic::common::print_array<float, N>(output_voltages, *p_map.terminal);
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms)); 
+    // (void)hal::write(*p_map.terminal, "True degree:\n");
+    // arm_mimic::common::print_array<float, N>(true_degrees, *p_map.terminal);
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
+    // (void)hal::write(*p_map.terminal, "\n");
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 1000ms));
   }
 
   return hal::success();

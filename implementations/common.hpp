@@ -13,14 +13,14 @@ namespace arm_mimic::common {
         // Structure of json file
         /* 
         { 
-            HB: 0,
-            IO: 1,
-            M: 'M',
-            Angles: [$ROTUNDA, $SHOULDER, $ELBOW, $WRIST_PITCH, $WRIST_ROLL, $END_EFFECTOR]
+            heartbeat_count: 0,
+            is_operational: 1,
+            speed: 'M',
+            angles: [$ROTUNDA, $SHOULDER, $ELBOW, $WRIST_PITCH, $WRIST_ROLL, $END_EFFECTOR]
         }
         */
 
-        const char* json_format_str = "{\"HB\":\"0\",\"IO\":\"1\",\"M\":\"M\",\"CMD\":[%f,%f,%f,%f,%f,%f]}";
+        const char* json_format_str = "{\"heartbeat_count\":\"0\",\"is_operational\":\"1\",\"speed\":\"2\",\"angles\":[%f,%f,%f,%f,%f,%f]}";
         char buffer[200];
         snprintf(buffer, 200, json_format_str, 
             raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4], raw_data[5]);
