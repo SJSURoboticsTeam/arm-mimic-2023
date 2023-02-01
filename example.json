@@ -1,5 +1,6 @@
 {
     "heartbeat_count": "0",
-    "is_operational": "1", "speed":"2",
+    "is_operational": "1", 
+    "speed":"2",
     "angles" :[360.000000,35.534073,360.000000,360.000000,360.000000,360.000000]
 }

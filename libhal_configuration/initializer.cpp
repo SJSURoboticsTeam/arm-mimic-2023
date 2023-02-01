@@ -12,11 +12,18 @@
 #include "hardware_map.hpp"
 
 // hardware locations for pins and channels on the lpc4078
-#define SIGNAL_0 2, 1
-#define SIGNAL_1 2, 4
-#define SIGNAL_2 2, 6
-#define SIGNAL_3 2, 8
-#define ADC_CHANNEL 4
+constexpr int SIGNAL_0_PORT = 2;
+constexpr int SIGNAL_1_PORT = 2;
+constexpr int SIGNAL_2_PORT = 2;
+constexpr int SIGNAL_3_PORT = 2;
+
+
+constexpr int SIGNAL_0_PIN = 1;
+constexpr int SIGNAL_1_PIN = 4;
+constexpr int SIGNAL_2_PIN = 6;
+constexpr int SIGNAL_3_PIN = 8;
+
+constexpr int ADC_CHANNEL = 4;
 
 hal::result<arm_mimic::hardware_map> initialize_target()
 {
@@ -40,10 +47,10 @@ hal::result<arm_mimic::hardware_map> initialize_target()
     .baud_rate = 38400,
   })));
 
-  auto& signal_0_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_0>()));
-  auto& signal_1_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_1>()));
-  auto& signal_2_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_2>()));
-  auto& signal_3_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_3>()));
+  auto& signal_0_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_0_PORT, SIGNAL_0_PIN>()));
+  auto& signal_1_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_1_PORT, SIGNAL_0_PIN>()));
+  auto& signal_2_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_2_PORT, SIGNAL_0_PIN>()));
+  auto& signal_3_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_3_PORT, SIGNAL_0_PIN>()));
 
   auto& adc_inp_raw = HAL_CHECK((hal::lpc40xx::adc::get<ADC_CHANNEL>()));
 
