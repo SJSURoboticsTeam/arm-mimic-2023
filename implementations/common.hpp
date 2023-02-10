@@ -15,7 +15,7 @@ namespace arm_mimic::common {
         { 
             heartbeat_count: 0,
             is_operational: 1,
-            speed: 'M',
+            speed: 2,
             angles: [$ROTUNDA, $SHOULDER, $ELBOW, $WRIST_PITCH, $WRIST_ROLL, $END_EFFECTOR]
         }
         */
