@@ -7,16 +7,9 @@
 #include <libhal-util/map.hpp>
 #include <libhal-util/math.hpp>
 
+namespace arm_mimic{
 class AdcMuxCd74hc4067
 {
-private:
-    hal::adc* adc_output_;
-    hal::output_pin* signal_0_;
-    hal::output_pin* signal_1_;
-    hal::output_pin* signal_2_;
-    hal::output_pin* signal_3_;
-    hal::steady_clock* clock_;
-
 public:
     AdcMuxCd74hc4067(
         hal::adc* adc_pin,
@@ -32,6 +25,15 @@ public:
 
     template<uint8_t N>
     hal::result<std::array<float, N>> read_all(std::array<uint8_t, N> channel_list);
+    
+private:
+    hal::adc* adc_output_;
+    hal::output_pin* signal_0_;
+    hal::output_pin* signal_1_;
+    hal::output_pin* signal_2_;
+    hal::output_pin* signal_3_;
+    hal::steady_clock* clock_;
+
 
 };
 
@@ -102,5 +104,4 @@ hal::result<std::array<float, N>> AdcMuxCd74hc4067::read_all(std::array<uint8_t,
     return results;
 
 }
-
-
+}
