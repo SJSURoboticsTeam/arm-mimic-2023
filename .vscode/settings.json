@@ -70,5 +70,5 @@
         "variant": "cpp",
         "semaphore": "cpp"
     },
-    "cmake.sourceDirectory": "${workspaceFolder}/project"
+    "cmake.sourceDirectory": "${workspaceFolder}/."
 }
