@@ -39,18 +39,17 @@ hal::status app_main(arm_mimic::hardware_map& p_map) {
     }
     
     HAL_CHECK(arm_mimic::common::send_data_mc(*p_map.terminal, results));
-    HAL_CHECK(hal::delay(*p_map.steady_clock, 1000ms));
     // (void)hal::write(*p_map.terminal, "Phase shift:\n");
     // (void)arm_mimic::common::print_array<float, N>(results, *p_map.terminal);
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 1ms));
     // (void)hal::write(*p_map.terminal, "Voltage:\n");
     // (void)arm_mimic::common::print_array<float, N>(output_voltages, *p_map.terminal);
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms)); 
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 1ms)); 
     // (void)hal::write(*p_map.terminal, "True degree:\n");
     // arm_mimic::common::print_array<float, N>(true_degrees, *p_map.terminal);
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 10ms));
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 1ms));
     // (void)hal::write(*p_map.terminal, "\n");
-    // HAL_CHECK(hal::delay(*p_map.steady_clock, 1000ms));
+    // HAL_CHECK(hal::delay(*p_map.steady_clock, 250ms));
   }
 
   return hal::success();
