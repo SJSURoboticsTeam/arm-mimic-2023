@@ -27,3 +27,4 @@ struct hardware_map
 // Application function must be implemented by one of the compilation units
 // (.cpp) files.
 hal::result<arm_mimic::hardware_map> initialize_target();
+hal::status application(arm_mimic::hardware_map& p_map);
