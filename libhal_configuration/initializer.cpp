@@ -48,9 +48,9 @@ hal::result<arm_mimic::hardware_map> initialize_target()
   })));
 
   auto& signal_0_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_0_PORT, SIGNAL_0_PIN>()));
-  auto& signal_1_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_1_PORT, SIGNAL_0_PIN>()));
-  auto& signal_2_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_2_PORT, SIGNAL_0_PIN>()));
-  auto& signal_3_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_3_PORT, SIGNAL_0_PIN>()));
+  auto& signal_1_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_1_PORT, SIGNAL_1_PIN>()));
+  auto& signal_2_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_2_PORT, SIGNAL_2_PIN>()));
+  auto& signal_3_raw = HAL_CHECK((hal::lpc40xx::output_pin::get<SIGNAL_3_PORT, SIGNAL_3_PIN>()));
 
   auto& adc_inp_raw = HAL_CHECK((hal::lpc40xx::adc::get<ADC_CHANNEL>()));
 
