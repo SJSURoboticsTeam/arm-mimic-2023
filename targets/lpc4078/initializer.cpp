@@ -12,18 +12,30 @@
 #include "hardware_map.hpp"
 
 // hardware locations for pins and channels on the lpc4078
-constexpr int SIGNAL_0_PORT = 2;
-constexpr int SIGNAL_1_PORT = 2;
-constexpr int SIGNAL_2_PORT = 2;
-constexpr int SIGNAL_3_PORT = 2;
+constexpr int SIGNAL_0_PORT = 1;
+constexpr int SIGNAL_1_PORT = 1;
+constexpr int SIGNAL_2_PORT = 1;
+constexpr int SIGNAL_3_PORT = 1;
 
 
-constexpr int SIGNAL_0_PIN = 1;
-constexpr int SIGNAL_1_PIN = 4;
-constexpr int SIGNAL_2_PIN = 6;
-constexpr int SIGNAL_3_PIN = 8;
+constexpr int SIGNAL_0_PIN = 15;
+constexpr int SIGNAL_1_PIN = 23;
+constexpr int SIGNAL_2_PIN = 22;
+constexpr int SIGNAL_3_PIN = 20;
 
-constexpr int ADC_CHANNEL = 4;
+constexpr int ADC_CHANNEL = 5;
+
+// constexpr int SIGNAL_0_PORT = 2;
+// constexpr int SIGNAL_1_PORT = 2;
+// constexpr int SIGNAL_2_PORT = 2;
+// constexpr int SIGNAL_3_PORT = 2;
+
+// constexpr int SIGNAL_0_PIN = 1;
+// constexpr int SIGNAL_1_PIN = 4;
+// constexpr int SIGNAL_2_PIN = 6;
+// constexpr int SIGNAL_3_PIN = 8;
+
+// constexpr int ADC_CHANNEL = 4;
 
 hal::result<arm_mimic::hardware_map> initialize_target()
 {
