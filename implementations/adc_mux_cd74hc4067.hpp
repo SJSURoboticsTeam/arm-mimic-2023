@@ -68,6 +68,9 @@ hal::result<void> AdcMuxCd74hc4067::swap_channels(uint8_t number) {
 }
 
 hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
+    using namespace std::chrono_literals;
+    using namespace hal::literals;
+    
     if (channel > 16)
         return hal::new_error("Channel is greater than 16", std::errc::invalid_argument);
     
@@ -75,18 +78,20 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
     HAL_CHECK(swap_channels(channel)); // checking early to ensure continuation
 
     // take ten readings then average them
+    float digital_value;
     for (int i = 0; i < 10; i++) {
-        float digital_value = HAL_CHECK(adc_output_->read()); 
+        digital_value = HAL_CHECK(adc_output_->read());
+        HAL_CHECK(hal::delay(*clock_, 5ms));
         digital_value = hal::absolute_value(digital_value); // we assume positive reference voltage will be used
         float voltage = hal::map(
             digital_value,
-            std::pair<float, float>(0, 100), // FIXME: get real maximum
+            std::pair<float, float>(0.0f, 100.0f), // FIXME: get real maximum
             std::pair<float, float>(0.0f, 3.3f)
         ) * 100;
         average += voltage;
     }
 
-    return average / 10;
+    return average / 10.0f;
 }
 
 template<uint8_t N>
