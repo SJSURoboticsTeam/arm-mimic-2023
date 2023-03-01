@@ -22,7 +22,7 @@ hal::status application(arm_mimic::hardware_map& p_map) {
   const uint8_t N = 6;
   std::array<uint8_t, N> channels = {0, 1, 2, 3, 4, 5};
   std::array<float, N> degree_conversion = {360, 180, 180, 180, 360, 180}; 
-  std::array<float, N> voltage_maxes = {0.3333, 3.3, 3.3, 3.3, 0.3333, 3.3};
+  std::array<float, N> voltage_maxes = {6.7, 3.3, 3.3, 3.3, 10, 3.3};
   std::array<float, N> true_degrees = {};
   std::array<float, N> results = {};
   auto digital_multiplexer = arm_mimic::AdcMuxCd74hc4067(p_map.adc_pin, p_map.signal_0, p_map.signal_1, p_map.signal_2, p_map.signal_3, p_map.steady_clock);
