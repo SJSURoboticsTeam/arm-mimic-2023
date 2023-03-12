@@ -76,7 +76,7 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
 
     // take ten readings then average them
     for (int i = 0; i < 10; i++) {
-        float digital_value = HAL_CHECK(adc_output_->read()); 
+        float digital_value = HAL_CHECK(adc_output_->read()).sample; 
         digital_value = hal::absolute_value(digital_value); // we assume positive reference voltage will be used
         float voltage = hal::map(
             digital_value,
