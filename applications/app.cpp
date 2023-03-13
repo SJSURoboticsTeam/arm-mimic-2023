@@ -26,12 +26,14 @@ hal::status application(arm_mimic::hardware_map& p_map) {
   std::array<float, N> true_degrees = {};
   std::array<float, N> results = {};
   auto digital_multiplexer = arm_mimic::AdcMuxCd74hc4067(p_map.adc_pin, p_map.signal_0, p_map.signal_1, p_map.signal_2, p_map.signal_3, p_map.steady_clock);
-
+  std::array<float, N> output_voltages;
+  float true_degree;
+  
   while (true) {
     
-    auto output_voltages = HAL_CHECK(digital_multiplexer.read_all<N>(channels));
+    output_voltages = HAL_CHECK(digital_multiplexer.read_all<N>(channels));
     for (auto i = 0; i < N; i++) {
-      float true_degree = arm_mimic::voltage_to_degree(output_voltages[i], voltage_maxes[i], 360);
+      true_degree = arm_mimic::voltage_to_degree(output_voltages[i], voltage_maxes[i], 360);
       true_degrees[i] = true_degree;
       if (degree_conversion[i] != 360) {
         results[i] = HAL_CHECK(arm_mimic::degree_phase_shift(true_degree, degree_conversion[i]));
