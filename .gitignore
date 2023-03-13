@@ -560,3 +560,5 @@ FodyWeavers.xsd
 build/**
 
 project/build/**
+
+CMakeUserPresets.json
