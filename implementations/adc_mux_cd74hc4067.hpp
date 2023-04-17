@@ -77,7 +77,7 @@ hal::result<float> AdcMuxCd74hc4067::read_one(uint8_t channel) {
     float average = 0;
     HAL_CHECK(swap_channels(channel)); // checking early to ensure continuation
 
-    // take ten readings then average them
+    // take five readings then average them
     const float average_count = 5;
     float digital_value;
     for (int i = 0; i < average_count; i++) {

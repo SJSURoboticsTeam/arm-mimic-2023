@@ -11,6 +11,7 @@
 #include "implementations/degree_manipulation.hpp"
 #include "implementations/mission_control_handler.hpp"
 #include "implementations/utility.hpp"
+#include "implementations/generic_adc_mux_driver.hpp"
 
 #include "hardware_map.hpp"
 
