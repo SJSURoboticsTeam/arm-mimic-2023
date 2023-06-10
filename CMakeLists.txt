@@ -9,7 +9,7 @@ project(demos VERSION 0.0.1 LANGUAGES CXX)
 find_package(libhal-lpc REQUIRED CONFIG)
 find_package(libhal-util REQUIRED CONFIG)
 
-set(DEMOS app mimic_debug)
+set(DEMOS app mimic_debug tla2528)
 set(TARGETS lpc4078)
 
 add_link_options(-lc -lrdimon -u _printf_float)
