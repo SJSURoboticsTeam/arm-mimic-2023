@@ -26,7 +26,8 @@ public:
 
     enum addresses : hal::byte
   {
-    i2c_selection = 0b001'0111, // 0 ohm setting (17h)
+    start = 0b001'0000, // found from the arduino code
+    i2c_selection = 0x17h, // 0 ohm setting (17h) 0b001'0111
     single_read = 0b0001'0000,
     single_write = 0b0000'1000,
     cont_read = 0b0011'0000,
@@ -44,8 +45,27 @@ public:
   hal::result<float> read_one()
   {
     std::array<hal::byte, 9> buffer;
-    std::array<hal::byte, 1> single_read_address{ { single_read } };
+    std::array<hal::byte, 9> single_read_address{ { single_read } };
+    // START CONDITION FOR I2C
+    HAL_CHECK(hal::write(m_i2c, addresses::start, single_read_address, hal::never_timeout()));
+    // 7-BIT SLAVE ADDRESS
     HAL_CHECK(hal::write(m_i2c, addresses::i2c_selection, single_read_address, hal::never_timeout()));
+    // WRITE BIT (LOW)
+    HAL_CHECK(hal::write(m_i2c, addresses::single_write, single_read_address, hal::never_timeout()));
+    // SMTH SHOULD BE ACKNOWLEDGED HERE
+    
+    // DEVICE ADDRESS AND READ BIT 0001 0000b
+    HAL_CHECK(hal::write(m_i2c, addresses::single_read, single_read_address, hal::never_timeout()));
+    // SMTH SHOULD BE ACKNOWLEDGED HERE
+
+    // REGISTER ADDRESS HARDCODED
+    HAL_CHECK(hal::write(m_i2c, 0x0, single_read_address, hal::never_timeout()));
+
+    // ACKKKKK
+
+    // P/SR???
+    
+
     HAL_CHECK(hal::delay(steady_clock, 1ms));
     HAL_CHECK(
       hal::read(m_i2c, i2c_selection, buffer, hal::never_timeout()));
